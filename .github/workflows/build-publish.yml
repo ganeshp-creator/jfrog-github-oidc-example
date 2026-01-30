@@ -13,7 +13,7 @@ jobs:
       OIDC_AUDIENCE: 'jfrog-github'
       # MUST match "Provider Name" in JFrog Integration screen (Screenshot 3 shows 'ganesh')
       OIDC_PROVIDER: 'ganesh' 
-      PLATFORM_REPO: 'eks-npm'
+      PLATFORM_REPO: 'ganesh-npm1'
     
     defaults:
       run:
