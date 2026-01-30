@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4 # Updated to v4 for better performance
+        uses: actions/checkout@v4 # Updated to v4 for better performance 
 
       - name: Setup Node
         uses: actions/setup-node@v4 # Updated to v4
