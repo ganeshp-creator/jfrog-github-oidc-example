@@ -43,7 +43,7 @@ jobs:
        - name: Publish
          run: jf npm publish
 
-       - name: Publish Build info With JFrog CLI
+       - name: Publish Build info With JFrog CLI 
          run: |
           # Collect environment variables for the build
           jf rt build-collect-env
