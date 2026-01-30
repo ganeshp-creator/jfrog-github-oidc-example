@@ -1,53 +1,53 @@
 name: "JFrog-GitHub NPM Publish OIDC Integration"
 on: push
 
-# This is required as per
-# https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-cloud-providers#adding-permissions-settings
 permissions:
-  id-token: write
+  id-token: write   # Required for OIDC
+  contents: read    # Required for actions/checkout
 
 jobs:
-  build:
-     runs-on: ubuntu-latest
-     env:
-      OIDC_AUDIENCE: 'jfrog-github'
-      OIDC_PROVIDER: 'github'
-      PLATFORM_REPO: 'eks-npm'
-     defaults:
-      run:
-        working-directory: ./package
-     steps:
-       - name: Checkout
-         uses: actions/checkout@v3
+  build:
+    runs-on: ubuntu-latest
+    env:
+      OIDC_AUDIENCE: 'jfrog-github'
+      OIDC_PROVIDER: 'github'
+      PLATFORM_REPO: 'eks-npm'
+    
+    defaults:
+      run:
+        working-directory: ./package
 
-       - name: Setup Node npm
-         uses: actions/setup-node@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4 # Updated to v4 for better performance
 
-       - name: Setup JFrog CLI
-         uses: jfrog/setup-jfrog-cli@v3
-         env:
-           JF_URL: ${{ secrets.JF_URL }}
-         with:
-           oidc-provider-name: ${{ env.OIDC_PROVIDER }}
-           oidc-audience: ${{ env.OIDC_AUDIENCE }}
+      - name: Setup Node
+        uses: actions/setup-node@v4 # Updated to v4
+        with:
+          node-version: '20' # Specify your node version here
 
-       - name: Set CLI Config
-         run: jf npm-config --global=true --repo-resolve=$PLATFORM_REPO --repo-deploy=$PLATFORM_REPO
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4 # Updated to v4
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+        with:
+          oidc-provider-name: ${{ env.OIDC_PROVIDER }}
+          oidc-audience: ${{ env.OIDC_AUDIENCE }}
 
-       - name: Install Dependencies
-         run: jf npm install
+      - name: Set CLI Config
+        run: jf npm-config --global=true --repo-resolve=$PLATFORM_REPO --repo-deploy=$PLATFORM_REPO
 
-       - name: Run tests
-         run: npm test
+      - name: Install Dependencies
+        run: jf npm install
 
-       - name: Publish
-         run: jf npm publish
+      - name: Run tests
+        run: npm test
 
-       - name: Publish Build info With JFrog CLI 
-         run: |
-          # Collect environment variables for the build
-          jf rt build-collect-env
-          # Collect VCS details from git and add them to the build
-          jf rt build-add-git
-          # Publish build info
-          jf rt build-publish
+      - name: Publish
+        run: jf npm publish
+
+      - name: Publish Build info
+        run: |
+          jf rt build-collect-env
+          jf rt build-add-git
+          jf rt build-publish
