@@ -2,15 +2,17 @@ name: "JFrog-GitHub NPM Publish OIDC Integration"
 on: push
 
 permissions:
-  id-token: write   # Required for OIDC
+  id-token: write   # Required for OIDC token exchange
   contents: read    # Required for actions/checkout
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      # MUST match "Audience" in JFrog OIDC Integration screen
       OIDC_AUDIENCE: 'jfrog-github'
-      OIDC_PROVIDER: 'github'
+      # MUST match "Provider Name" in JFrog Integration screen (Screenshot 3 shows 'ganesh')
+      OIDC_PROVIDER: 'ganesh' 
       PLATFORM_REPO: 'eks-npm'
     
     defaults:
@@ -19,15 +21,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4 # Updated to v4 for better performance 
+        uses: actions/checkout@v4 
 
       - name: Setup Node
-        uses: actions/setup-node@v4 # Updated to v4
+        uses: actions/setup-node@v4 
         with:
-          node-version: '20' # Specify your node version here
+          node-version: '20'
 
       - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4 # Updated to v4
+        uses: jfrog/setup-jfrog-cli@v4 
         env:
           JF_URL: ${{ secrets.JF_URL }}
         with:
@@ -35,6 +37,7 @@ jobs:
           oidc-audience: ${{ env.OIDC_AUDIENCE }}
 
       - name: Set CLI Config
+        # This command creates the temporary .npmrc required for the build
         run: jf npm-config --global=true --repo-resolve=$PLATFORM_REPO --repo-deploy=$PLATFORM_REPO
 
       - name: Install Dependencies
