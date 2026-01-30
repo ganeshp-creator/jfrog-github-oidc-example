@@ -44,7 +44,7 @@ jobs:
         run: npm test
 
       - name: Publish
-        run: jf npm publish
+        run: jf npm publish 
 
       - name: Publish Build info
         run: |
