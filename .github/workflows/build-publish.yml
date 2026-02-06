@@ -12,8 +12,8 @@ jobs:
       # MUST match "Audience" in JFrog OIDC Integration screen
       OIDC_AUDIENCE: 'jfrog-github'
       # MUST match "Provider Name" in JFrog Integration screen (Screenshot 3 shows 'ganesh')
-      OIDC_PROVIDER: 'ganesh' 
-      PLATFORM_REPO: 'ganesh-npm2'
+      OIDC_PROVIDER: 'yashwithan' 
+      PLATFORM_REPO: 'ganesh-oidc-vir'
     
     defaults:
       run:
