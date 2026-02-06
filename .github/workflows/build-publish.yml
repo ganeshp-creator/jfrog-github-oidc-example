@@ -32,6 +32,7 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v4 
         env:
           JF_URL: ${{ secrets.JF_URL }}
+          OIDC_3: ${{ secrets.OIDC_3 }}
         with:
           oidc-provider-name: ${{ env.OIDC_PROVIDER }}
           oidc-audience: ${{ env.OIDC_AUDIENCE }}
