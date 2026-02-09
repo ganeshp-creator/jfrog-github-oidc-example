@@ -12,7 +12,7 @@ jobs:
       # MUST match "Audience" in JFrog OIDC Integration screen
       OIDC_AUDIENCE: 'jfrog-github'
       # MUST match "Provider Name" in JFrog Integration screen (Screenshot 3 shows 'ganesh')
-      OIDC_PROVIDER: 'yashwithan' 
+      OIDC_PROVIDER: 'ganesh' 
       PLATFORM_REPO: 'ganesh-oidc-vir'
     
     defaults:
@@ -32,7 +32,7 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v4 
         env:
           JF_URL: ${{ secrets.JF_URL }}
-          OIDC_3: ${{ secrets.OIDC_3 }}
+          OIDC_4: ${{ secrets.OIDC_4 }}
         with:
           oidc-provider-name: ${{ env.OIDC_PROVIDER }}
           oidc-audience: ${{ env.OIDC_AUDIENCE }}
